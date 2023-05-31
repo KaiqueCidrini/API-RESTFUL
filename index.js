@@ -349,6 +349,7 @@ app.post("/user", auth, (req, res) => {
         res.status(400);
         res.json({error: "[ERRO] Parâmetro inválido: faltam informações no formulário enviado!"});
     }else {
+        var stringPassword = password.toString();
         Users.findOne({
             where: {
                 email: email
@@ -356,7 +357,7 @@ app.post("/user", auth, (req, res) => {
         }).then(user => {
             if (user == undefined) {
                 var salt = bcrypt.genSaltSync(10);
-                var hash = bcrypt.hashSync(password, salt);
+                var hash = bcrypt.hashSync(stringPassword, salt);
                 Users.create({
                     name: name,
                     email: email,
@@ -557,7 +558,8 @@ app.delete("/user/:id", auth, (req, res) => {
             }
         }).then(user => {
             if (user == undefined) {
-
+                res.status(404);
+                res.json({error: "[ERRO] O usuário informado não está cadastrado no nosso sistema!"});
             } else {
                 Users.destroy({
                     where: {
