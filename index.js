@@ -320,7 +320,7 @@ app.delete("/book/:id", auth, (req, res) => {
                 res.status(404);
                 res.json({error: "[ERRO] O livro informado não está cadastrado no nosso sistema!"});
             }else {
-                Games.destroy({
+                Books.destroy({
                     where: {
                         id: id
                     }
