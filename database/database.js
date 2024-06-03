@@ -1,10 +1,11 @@
-const sequelize = require('sequelize');
-const connection = new sequelize('book_api', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql',
-    logging: false,
-    timezone: '-03:00'
-}); 
+const knex = require('knex')({
+    client: 'mysql2',
+    connection: {
+      host : 'localhost',
+      user : 'root',
+      password : 'YSL4L1F3',
+      database : 'midiapi'
+    }
+  });
 
-
-module.exports = connection;
+  module.exports = knex;

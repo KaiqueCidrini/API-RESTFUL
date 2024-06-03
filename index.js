@@ -1,29 +1,29 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const connection = require("./database/database");
-const Books = require("./books/Books");
-const Users = require("./users/Users");
 const cors = require("cors");
-const auth = require("./middlewares/authenticate");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+
+const router = require("../API-RESTFUL-main/routes/routes");
+
 
 
 const JWTSecret = "segredo";
-
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
 
-connection.authenticate().then(() => {
-    console.log('Conexão feita com sucesso!');
-}).catch((error) => {
-    console.log(error);
+app.use("/", router);
+
+
+
+app.listen(1234, () => {
+    console.log("API rodando!");
 });
 
 
+
+/*
 app.get("/", (req, res) =>{
     var HATEOAS = [
         {
@@ -625,10 +625,7 @@ app.post("/auth", (req, res) => {
         res.json({error: "[ERRO] Parâmetro inválido: faltam informações no formulário enviado!"});
     }
 });
+*/
 
 
 
-
-app.listen(1234, () => {
-    console.log("API rodando!");
-});
