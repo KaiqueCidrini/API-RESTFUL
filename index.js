@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const router = require("../API-RESTFUL-main/routes/routes");
 
-
+console.log ("Teste");
 
 const JWTSecret = "segredo";
 
