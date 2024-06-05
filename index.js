@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const router = require("../API-RESTFUL-main/routes/routes");
+const router = require("../API-RESTFUL/routes/routes");
 
 console.log ("Teste");
 
