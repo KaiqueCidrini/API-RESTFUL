@@ -38,7 +38,24 @@ class UsuarioController{
 
     async login(req, res){
         const {email, senha} = req.body;
-        const resultado = Usuario.login(email, senha);
+        const resultado = await Usuario.login(email, senha);
+        if (resultado){
+            res.status(200);
+            res.send(resultado.token);
+        }else{
+            if (resultado.estado == 401){
+                res.status(401);
+                res.send(resultado.error);
+
+            }if(resultado.estado == 404) {
+                res.status(404);
+                res.send(resultado.error);
+
+            }if(resultado.estado == 406) {
+                res.status(406);
+                res.send(resultado.error);
+            }            
+        }  
     }
 }
 

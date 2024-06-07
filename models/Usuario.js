@@ -72,8 +72,8 @@ class Usuario {
     async buscaRolePorEmail(email) {
         try {
             const usuario = await knex.select().where({ email: email }).table("usuarios");
-            if (usuario.lenght > 0) {
-                return {status: true, usario: usuario[0]}
+            if (usuario.length > 0) {
+                return {status: true, usuario: usuario[0]}
             }
             else {
                 return {status: false, error:"Usuário inexistente."};
@@ -86,25 +86,27 @@ class Usuario {
         }
 
     async login(email, senha){
-        if(email =! undefined){
-            const resultado = this.buscaRolePorEmail(email);
-            if(resultado){
+        if(email != undefined){
+            const resultado = await this.buscaRolePorEmail(email);
+            if(resultado.status){
                 const usuario = resultado.usuario;
-                const resultado = await bcrypt.compare(senha, usuario.senha);
-                if(resultado){  
+                const comparacaoSenha = await bcrypt.compare(senha, usuario.senha);
+                if(comparacaoSenha){
+                    var token = jwt.sign({id: usuario.id, role: usuario.role}, secret);
+                    console.log(token);                       
+                    return {status: true, token: token};
                     
-
                 }else{
-                    return {status: false, error: "Senha Incorreta"};
+                    return {status: false, error: "Senha Incorreta", estado: 401};
 
                 }
 
             } else{
-                return{status: false, resultado: resultado.erro};
+                return{status: false, error: resultado.erro, estado: 404};
             }
 
         }else{
-            return{status: false, error: "Faltam informações: Email de Usuário"};
+            return{status: false, error: "Faltam informações: Email de Usuário", estado: 406};
         }
 
             
