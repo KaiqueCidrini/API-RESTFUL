@@ -96,6 +96,7 @@ class Usuario {
                     console.log(token);                       
                     return {status: true, token: token};
                     
+                    
                 }else{
                     return {status: false, error: "Senha Incorreta", estado: 401};
 

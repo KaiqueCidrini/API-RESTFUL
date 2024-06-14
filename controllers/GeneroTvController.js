@@ -1,7 +1,7 @@
 const Genero = require("../models/GeneroTv");
 
 
-class MidiaTvController{
+class GeneroTvController{
     async novo(req,res){
         const data = req.body;
         const resultado = await Genero.novo(data);
@@ -12,6 +12,7 @@ class MidiaTvController{
             if(resultado.estado == 406){
                 res.status(406);
                 res.send(resultado.error);
+                
             }if(resultado.estado == 505){
                 res.status(505);
                 res.send(resultado.error);
@@ -21,4 +22,4 @@ class MidiaTvController{
     
 
 }    
-module.exports = new MidiaTvController();
+module.exports = new GeneroTvController();

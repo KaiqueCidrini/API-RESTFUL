@@ -6,7 +6,7 @@ class GeneroTv{
         if(data.nome != undefined){
             novoGeneroTv.nome = data.nome;
         }else{
-            return {status : false, error: "Faltam informações, nome", estado: 406};
+            return {status : false, error: "Faltam informações, Nome", estado: 406};
         }
 
         try{

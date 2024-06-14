@@ -57,6 +57,10 @@ class UsuarioController{
             }            
         }  
     }
+    async getLogin(req, res){
+        res.status(200);
+        res.json({usuario: req.loggedUser});
+    }
 }
 
 module.exports = new UsuarioController();
