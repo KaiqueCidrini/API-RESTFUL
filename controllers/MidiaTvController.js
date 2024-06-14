@@ -40,7 +40,8 @@ class MidiaTvController{
     }
 
     async todos(req,res){
-        const midias = await MidiaTv.todos();
+        const pagina = req.params.pagina;
+        const midias = await MidiaTv.todos(pagina);
         if(midias.status){
             res.status(200);
             res.send(midias.midiasArray);

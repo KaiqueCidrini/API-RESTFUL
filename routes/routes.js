@@ -21,16 +21,19 @@ router.get("/login",autenticacao, UsuarioController.getLogin);
 //Cadastro de midias.
 router.post("/midiaTv", autenticacao, MidiaTvController.novo);
 
-router.put("/midiaTv/:midia_id", MidiaTvController.editar);
+router.put("/midiaTv/:midia_id", autenticacao, MidiaTvController.editar);
 
 router.post("/categoriaTv", autenticacao, CategoriaTvController.novo);
 
+router.put("/categoriaTv/:categoria_id", CategoriaTvController.editar);
 
 router.post("/generoTv", autenticacao, GeneroTvController.novo);
 
+router.put("/generoTv/:genero_id", GeneroTvController.editar);
 
 //Retorno de midias cadastradas.
-router.get("/midiaTv", MidiaTvController.todos);
+
+router.get("/midiaTv/:pagina", MidiaTvController.todos);
 router.get("/midiaTvPorId/:midia_id", MidiaTvController.umPorId);
 
 

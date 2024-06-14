@@ -100,14 +100,30 @@ class MidiaTv{
     }
 
 
-    async todos(){
+    async todos(pagina){
         try{
-            const midias = await knex.select().table("midia_tv");
-            if(midias.length > 0){
-                return {status : true, midiasArray : midias}
-            }else{
-                return{status : false, error : "Não existem midias cadastradas.", estado: 404};
+            if(pagina == 0){
+                pagina = 1;
             }
+            var ultimaPagina = 1;
+            const limite = 10;
+            const quantidadeMidias = await knex("midia_tv").count("id");
+            const quantidadeMidiasFormatado = parseInt(quantidadeMidias[0][Object.keys(quantidadeMidias[0])[0]]);
+            if(quantidadeMidiasFormatado != 0){
+                ultimaPagina = Math.ceil(quantidadeMidiasFormatado / limite);
+            }else {
+                return {status : false , error : "Não existem midias cadastradas.", estado : 404};
+            }
+
+            const midias = await knex.select().offset(Number((pagina * limite) - limite)).limit(limite).table("midia_tv");
+            if(Object.keys(midias).length > 0){
+                return {status : true, midiasArray: midias, ultimaPagina: ultimaPagina};
+            }else{
+
+                return{status : false, error: "Não existem midias cadastradas.", estado: 404};
+            }
+           
+
         }catch(error){
             return{status : false, error : error, estado: 505};
         }
