@@ -78,10 +78,10 @@ class MidiaTvController{
 
     async associaMidiaUsuario(req, res){
         const data = req.body;
-        const resultado = MidiaTv.associaMidiaAoUsuario(data);
+        const resultado = await MidiaTv.associaMidiaUsuario(data);
         if(resultado.status){
             res.status(200);
-            res.sed("Tudo ok!");
+            res.send("Tudo ok!");
         }else {
             if(resultado.status == 406){
                 res.status (406);

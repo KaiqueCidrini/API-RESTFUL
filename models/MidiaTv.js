@@ -146,7 +146,7 @@ class MidiaTv{
 
     }
 
-    async associaMidiaAoUsuario(data){
+    async associaMidiaUsuario(data){
         let novaAssociacao = {};
         if (data.usuario_id){
             novaAssociacao.usuario_id = data.usuario_id;
@@ -168,28 +168,54 @@ class MidiaTv{
         if (data.comentario){
             novaAssociacao.comentario = data.comentario;
         }
-        if(data.nota){
-            const resultado = await this.buscaNotasMidia(data.midia_tv_id);
-            console.log(resultado);
-        }
+        if(data.nota != undefined && data.nota >= 1 && data.nota <= 5){
+            try{
+                novaAssociacao.nota = parseInt(data.nota);
+                await knex.insert(novaAssociacao).table("usuarios_midia_tv");
+                const resultadoBusca = await this.buscaNotasMidia(data.midia_tv_id);
+                if(resultadoBusca.status){
+                    const novaMedia = parseInt(resultadoBusca.notasSoma) / parseInt(resultadoBusca.notasQtd);
+                    const novaMediaArredondada = parseFloat(novaMedia.toFixed(2));
 
-        
+                    const resultadoEdicao = await this.editaMediaMidia(data.midia_tv_id, novaMediaArredondada);
+                    
+                    if(resultadoEdicao.status){
+                        return {status: true};
+                    }else{
+                        return {status: false, error: resultadoEdicao.error, estado: resultadoEdicao.estado};
+                    }
+                }else {
+                    return{status: false, error: resultadoBusca.error, estado: resultadoBusca.estado};
+                }
+            }catch(error){
+                return {status: false, error: error, estado: 505};
+            }
+        }
     }
 
     async buscaNotasMidia(midia_tv_id){
         try{
-            const notas = await knex("usuarios_midia_tv").count("midia_tv_id");
-            const notasQtd = parseInt(notas[0][Object.keys(notas[0])[0]]);
-            const notasSomaFormatado = await knex("usuarios_midia_tv").sum("nota").where({midia_tv_id: midia_tv_id});
-            return {notasQtd : notasQtd, notasSoma : notasSomaFormatado};
+            const notasQtd = await knex("usuarios_midia_tv").count("midia_tv_id");
+            const notasQtdFormatado = parseInt(notasQtd[0][Object.keys(notasQtd[0])[0]]);
+            const notasSoma = await knex("usuarios_midia_tv").sum("nota").where({midia_tv_id: midia_tv_id});
+            const notasSomaFormatado = parseFloat(notasSoma[0][Object.keys(notasSoma[0])[0]]);
+            return {status: true, notasQtd: notasQtdFormatado, notasSoma: notasSomaFormatado};
         }catch(error){
-            console.log(error);
+            console.log(error); 
+            return {status : false, error: error, estado: 505};
         }
-
     }
 
-    
-
+    async editaMediaMidia(id, novaMedia){
+        const midia = {nota_media: novaMedia}
+        try{
+            await knex.update(midia).where({id: id}).table("midia_tv");
+            return {status: true};
+        }catch(error){
+            console.log(error);
+            return {status : false, error: error, estado : 505};
+        }
+    }
 }
 
 
