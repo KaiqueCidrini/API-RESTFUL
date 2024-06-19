@@ -146,6 +146,50 @@ class MidiaTv{
 
     }
 
+    async associaMidiaAoUsuario(data){
+        let novaAssociacao = {};
+        if (data.usuario_id){
+            novaAssociacao.usuario_id = data.usuario_id;
+        }else {
+            return {status : false , error : "Faltam informações : Usuário"};
+            
+        }
+        if (data.midia_tv_id){
+            novaAssociacao.midia_tv_id = data.midia_tv_id;
+        }else {
+            return {status : false , error : "Faltam informações : Midia"};
+            
+        }
+        if (data.midia_nome){
+            novaAssociacao.midia_nome = data.midia_nome;
+        }else {
+            return {status : false , error : "Faltam informações : Midia"};
+        }
+        if (data.comentario){
+            novaAssociacao.comentario = data.comentario;
+        }
+        if(data.nota){
+            const resultado = await this.buscaNotasMidia(data.midia_tv_id);
+            console.log(resultado);
+        }
+
+        
+    }
+
+    async buscaNotasMidia(midia_tv_id){
+        try{
+            const notas = await knex("usuarios_midia_tv").count("midia_tv_id");
+            const notasQtd = parseInt(notas[0][Object.keys(notas[0])[0]]);
+            const notasSomaFormatado = await knex("usuarios_midia_tv").sum("nota").where({midia_tv_id: midia_tv_id});
+            return {notasQtd : notasQtd, notasSoma : notasSomaFormatado};
+        }catch(error){
+            console.log(error);
+        }
+
+    }
+
+    
+
 }
 
 

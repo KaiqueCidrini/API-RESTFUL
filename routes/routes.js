@@ -36,6 +36,9 @@ router.put("/generoTv/:genero_id", GeneroTvController.editar);
 router.get("/midiaTv/:pagina", MidiaTvController.todos);
 router.get("/midiaTvPorId/:midia_id", MidiaTvController.umPorId);
 
+//Lista de midias por usuário
+
+router.post("/MidiasUsuario", MidiaTvController.associaMidiaUsuario);
 
 
 

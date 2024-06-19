@@ -76,6 +76,24 @@ class MidiaTvController{
 
     }
 
+    async associaMidiaUsuario(req, res){
+        const data = req.body;
+        const resultado = MidiaTv.associaMidiaAoUsuario(data);
+        if(resultado.status){
+            res.status(200);
+            res.sed("Tudo ok!");
+        }else {
+            if(resultado.status == 406){
+                res.status (406);
+                res.send(resultado.error);
+            }
+            if(resultado.status == 505){
+                res.status(505);
+                res.send(resultado.error);
+            }
+        }
+    }
+
 }
 
 module.exports = new MidiaTvController();
