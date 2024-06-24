@@ -83,11 +83,11 @@ class MidiaTvController{
             res.status(200);
             res.send("Tudo ok!");
         }else {
-            if(resultado.status == 406){
+            if(resultado.estado == 406){
                 res.status (406);
                 res.send(resultado.error);
             }
-            if(resultado.status == 505){
+            if(resultado.estado == 505){
                 res.status(505);
                 res.send(resultado.error);
             }

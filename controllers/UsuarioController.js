@@ -39,7 +39,7 @@ class UsuarioController{
     async login(req, res){
         const {email, senha} = req.body;
         const resultado = await Usuario.login(email, senha);
-        if (resultado){
+        if (resultado.status){
             res.status(200);
             res.send(resultado.token);
         }else{

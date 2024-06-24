@@ -39,7 +39,7 @@ class CategoriaTvController{
         }
 
     }
-    
+
 }
 
 module.exports = new CategoriaTvController();

@@ -147,7 +147,14 @@ class MidiaTv{
     }
 
     async associaMidiaUsuario(data){
+
+        const resultadoAssociacaoExiste = await this.verificaAssosiacaoPorUsuario(data.midia_tv_id, data.usuario_id);
+        if (resultadoAssociacaoExiste.status){
+            return{status: false, error: "Você já possui essa mídia", estado: 406}
+        }
+
         let novaAssociacao = {};
+
         if (data.usuario_id){
             novaAssociacao.usuario_id = data.usuario_id;
         }else {
@@ -169,6 +176,7 @@ class MidiaTv{
             novaAssociacao.comentario = data.comentario;
         }
         if(data.nota != undefined && data.nota >= 1 && data.nota <= 5){
+
             try{
                 novaAssociacao.nota = parseInt(data.nota);
                 await knex.insert(novaAssociacao).table("usuarios_midia_tv");
@@ -176,9 +184,8 @@ class MidiaTv{
                 if(resultadoBusca.status){
                     const novaMedia = parseInt(resultadoBusca.notasSoma) / parseInt(resultadoBusca.notasQtd);
                     const novaMediaArredondada = parseFloat(novaMedia.toFixed(2));
-
                     const resultadoEdicao = await this.editaMediaMidia(data.midia_tv_id, novaMediaArredondada);
-                    
+                 
                     if(resultadoEdicao.status){
                         return {status: true};
                     }else{
@@ -191,11 +198,36 @@ class MidiaTv{
                 return {status: false, error: error, estado: 505};
             }
         }
+
+        try{
+            await knex.insert(novaAssociacao).table("ususarios_midia_tv");
+            return{status: true};
+        }catch(error){
+            return{status: false, error : error, estado: 505}
+        }
+
     }
+
+        async verificaAssosiacaoPorUsuario(midia_tv_id, usuario_id){
+            try{
+            const nota = await knex.select().whereRaw(`midia_tv_id = '${midia_tv_id}' AND usuario_id = ${usuario_id}`).table("usuarios_midia_tv");
+            if(nota.length > 0){
+                return {status: true};
+            }else{
+                return {status: false};
+            }
+
+        }catch(error){
+            return {status: false, error: error, estado: 505};
+        }
+
+    }     
+
+    
 
     async buscaNotasMidia(midia_tv_id){
         try{
-            const notasQtd = await knex("usuarios_midia_tv").count("midia_tv_id");
+            const notasQtd = await knex("usuarios_midia_tv").count("nota").where({midia_tv_id: midia_tv_id}).whereNotNull("nota");
             const notasQtdFormatado = parseInt(notasQtd[0][Object.keys(notasQtd[0])[0]]);
             const notasSoma = await knex("usuarios_midia_tv").sum("nota").where({midia_tv_id: midia_tv_id});
             const notasSomaFormatado = parseFloat(notasSoma[0][Object.keys(notasSoma[0])[0]]);

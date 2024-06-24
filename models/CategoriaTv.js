@@ -15,7 +15,6 @@ class CategoriaTv{
         }catch(error){
             return {status: false, error : error, estado: 505};
         }
-
     }
 
     async editar(categoria_id, data){
@@ -32,8 +31,6 @@ class CategoriaTv{
             return {status : false , error : error, estado : 505};
         }
     }
-
-
 }
 
 module.exports = new CategoriaTv();
