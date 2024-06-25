@@ -97,10 +97,6 @@ class MidiaTvController{
     async retornaListaMidiasUsuario(req, res){
         const usuario_id = req.params.usuario_id;
         let status = req.params.status;
-        
-        if(status == undefined){
-            status = 0;
-        }
         if(status < 0 || status > 4){
             res.status(406);
             res.send("Paramêtro inválido!")
