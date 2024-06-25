@@ -39,7 +39,7 @@ router.get("/midiaTvPorId/:midia_id", MidiaTvController.umPorId);
 //Lista de midias por usuário
 
 router.post("/midiasUsuario", autenticacaoUsuario, MidiaTvController.associaMidiaUsuario);
-router.ger("/midiasUsuario/:usuario_id", autenticacaoUsuario, MidiaTvController)
+router.get("/midiasUsuario/:usuario_id", autenticacaoUsuario, MidiaTvController.retornaListaMidiasUsuario);
 
 
 
