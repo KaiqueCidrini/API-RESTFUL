@@ -248,6 +248,32 @@ class MidiaTv{
             return {status : false, error: error, estado : 505};
         }
     }
+
+    async listaMidiasUsuario(usuario_id,status){
+        try{
+            if(status == 0 ){
+                const midias = knex.select().where({usuario_id: usuario_id}).table("usuarios_midia_tv");
+                if(midias.length > 0){
+                    return {status : true, midias: midias};
+    
+                }else{
+                    return {status: false, error: "Você não possuí mídias cadastradas.", estado: 404}
+                }
+            }else{
+                const midias = knex.select().whereRaw(`status = '${status}' AND usuario_id = ${usuario_id}`).table("usuarios_midia_tv");
+                if(midias.length > 0){
+                    return {status : true, midias: midias};
+
+                }else{
+                    return {status: false, error: "Você não possuí esse tipo de mídia.", estado: 404}
+                }
+            }
+            
+
+        }catch(error){
+            return{status: false, error: error, estado: 505};
+        }
+    }
 }
 
 

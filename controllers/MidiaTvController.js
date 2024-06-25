@@ -94,6 +94,35 @@ class MidiaTvController{
         }
     }
 
+    async retornaListaMidiasUsuario(req, res){
+        const usuario_id = req.params.usuario_id;
+        let status = req.params.status;
+        
+        if(status == undefined){
+            status = 0;
+        }
+        if(status < 0 || status > 4){
+            res.status(406);
+            res.send("Paramêtro inválido!")
+        }
+        const resultado = await MidiaTv.listaMidiasUsuario(usuario_id, status);
+
+        if(resultado.status){
+            res.status(200);
+            res.send(resultado.midias);
+        }else{
+            if(resultado.estado == 404){
+                res.status(404);
+                res.send(resultado.error);
+            }
+            if(resultado.estado == 505){
+                res.status(505);
+                res.send(resultado.error);
+            }
+        }
+
+    }
+
 }
 
 module.exports = new MidiaTvController();

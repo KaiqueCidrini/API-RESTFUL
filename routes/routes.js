@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const autenticacao = require("../middlewares/authenticate");
-
+const autenticacaoUsuario = require("../middlewares/authenticateUser");
 const UsuarioController = require("../controllers/UsuarioController");
 
 const MidiaTvController = require("../controllers/MidiaTvController");
@@ -38,8 +38,8 @@ router.get("/midiaTvPorId/:midia_id", MidiaTvController.umPorId);
 
 //Lista de midias por usuário
 
-router.post("/MidiasUsuario", MidiaTvController.associaMidiaUsuario);
-
+router.post("/midiasUsuario", autenticacaoUsuario, MidiaTvController.associaMidiaUsuario);
+router.ger("/midiasUsuario/:usuario_id", autenticacaoUsuario, MidiaTvController)
 
 
 
