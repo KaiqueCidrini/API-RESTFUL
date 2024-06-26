@@ -34,14 +34,14 @@ router.put("/generoTv/:genero_id", GeneroTvController.editar);
 //Retorno de midias cadastradas.
 
 router.get("/midiaTv/:pagina", MidiaTvController.todos);
+
 router.get("/midiaTvPorId/:midia_id", MidiaTvController.umPorId);
+
 
 //Lista de midias por usuário
 
 router.post("/midiasUsuario", autenticacaoUsuario, MidiaTvController.associaMidiaUsuario);
 router.get("/midiasUsuario/:usuario_id", autenticacaoUsuario, MidiaTvController.retornaListaMidiasUsuario);
-
-
 
 module.exports = router;
 

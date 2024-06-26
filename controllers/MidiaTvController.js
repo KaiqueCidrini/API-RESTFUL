@@ -99,7 +99,7 @@ class MidiaTvController{
         let status = req.params.status;
         if(status < 0 || status > 4){
             res.status(406);
-            res.send("Paramêtro inválido!")
+            return res.send("Paramêtro inválido!")
         }
         const resultado = await MidiaTv.listaMidiasUsuario(usuario_id, status);
 
