@@ -3,7 +3,7 @@ const knex = require('knex')({
     connection: {
       host : 'localhost',
       user : 'root',
-      password : 'YSL4L1F3',
+      password : '95123',
       database : 'midiapi'
     }
   });

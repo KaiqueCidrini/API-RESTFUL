@@ -11,7 +11,7 @@ function auth (req, res, next) {
                 res.status(401);
                 res.json({error: "[ERROR] Token inválido ou expirado!"});
             } else {
-                if(data.role == 0){
+                if(data.role == 0 || data.role == 1){
                         req.token = token;
                         req.loggedUser = {id : data.id, role : data.role};
                         next()
